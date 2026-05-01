@@ -30,6 +30,7 @@ async def payment_page(request: Request, token: str, db: AsyncSession = Depends(
             "client": client,
             "paypal_client_id": settings.paypal_client_id,
             "paypal_plan_id": client.paypal_plan_id,
+            "currency": client.currency,
         },
     )
 
