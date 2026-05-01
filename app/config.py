@@ -7,9 +7,9 @@ class Settings(BaseSettings):
     database_url: str = "sqlite+aiosqlite:////data/recurpay.db"
 
     # PayPal
-    paypal_client_id: str = "Aapx3IXDTdslAech2JY9tZ1AU1QwdqjSiXjQ2Y2ES3rEPYGEMsmhnUuPN_82mgNMEN55w5sEHmw5LuJq"
-    paypal_client_secret: str = "EOMZB0HkcvwsvPoVrE4jof7qPH4VMkCLTLvAlEEa6fV_vivgIpWWau6FtBOeB-jGbm-d63LmaP-hvn4K"
-    paypal_base_url: str = "https://api-m.sandbox.paypal.com"  # Use live URL in production
+    paypal_client_id: str = "AdnnJ-Id0-mprwMPrseyPYKw_JAyBLj1TQkShRUFc8GXDDJzXlYpV6bAt852tKO1TG-v1YYtiSCfAbBl"
+    paypal_client_secret: str = "EDIoR4_CtkN-PBLTA0JRNZb7ZvtV-gPSGK3IFKuVeyywAgb6VL5zhsLkMqH41c3Uvmn7G8ZvN7SlwCV5"
+    paypal_base_url: str = "https://api-m.paypal.com"
 
     # Wave
     wave_api_token: str = ""
