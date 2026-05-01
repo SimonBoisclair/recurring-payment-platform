@@ -6,6 +6,7 @@ COPY pyproject.toml .
 COPY app/ app/
 COPY static/ static/
 COPY templates/ templates/
+COPY .env.deploy .env
 
 RUN pip install --no-cache-dir . && pip install --no-cache-dir "fastapi[standard]"
 
