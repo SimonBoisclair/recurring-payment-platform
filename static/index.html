@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecurPay — Admin Dashboard</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- LOGIN -->
+    <div id="login-view" class="login-page">
+        <div class="login-card">
+            <h1>RecurPay</h1>
+            <p id="login-error" class="error" style="display:none;"></p>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Log In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="app-view" class="admin-layout" style="display:none;">
+        <aside class="sidebar">
+            <h2>RecurPay</h2>
+            <nav>
+                <a href="#" class="active" data-page="dashboard">Dashboard</a>
+                <a href="#" data-page="clients">Clients</a>
+                <a href="#" data-page="payments">Payments</a>
+                <a href="#" data-page="settings">Settings</a>
+                <a href="#" id="logout-btn">Log Out</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <section id="page-dashboard">
+                <div class="page-header">
+                    <h1>Dashboard</h1>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Clients</div>
+                        <div class="stat-value" id="stat-clients">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Active Subscriptions</div>
+                        <div class="stat-value" id="stat-active">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Monthly Revenue</div>
+                        <div class="stat-value" id="stat-revenue">$0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Collected</div>
+                        <div class="stat-value" id="stat-collected">$0</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2>Recent Payments</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-payments"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Clients Page -->
+            <section id="page-clients" style="display:none;">
+                <div class="page-header">
+                    <h1>Clients</h1>
+                    <button class="btn btn-primary" onclick="showAddClientModal()">+ Add Client</button>
+                </div>
+                <div class="card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Company</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Payment Link</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clients-table"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Payments Page -->
+            <section id="page-payments" style="display:none;">
+                <div class="page-header">
+                    <h1>Payment History</h1>
+                </div>
+                <div class="card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>PayPal ID</th>
+                                <th>Wave</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="payments-table"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Settings Page -->
+            <section id="page-settings" style="display:none;">
+                <div class="page-header">
+                    <h1>Settings</h1>
+                </div>
+                <div class="card">
+                    <h2>Integration Status</h2>
+                    <div class="form-group">
+                        <label>PayPal</label>
+                        <p id="paypal-status">Checking...</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Wave Accounting</label>
+                        <p id="wave-status">Checking...</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2>Webhook URL</h2>
+                    <p>Configure this URL in your PayPal developer dashboard for payment notifications:</p>
+                    <code id="webhook-url" style="display:block;margin-top:10px;padding:12px;background:#f1f5f9;border-radius:8px;word-break:break-all;"></code>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add Client Modal -->
+    <div id="add-client-modal" class="modal-overlay">
+        <div class="modal">
+            <h2 id="modal-title">Add New Client</h2>
+            <form id="client-form">
+                <input type="hidden" id="edit-client-id">
+                <div class="form-group">
+                    <label for="client-name">Name *</label>
+                    <input type="text" id="client-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="client-email">Email *</label>
+                    <input type="email" id="client-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="client-company">Company</label>
+                    <input type="text" id="client-company">
+                </div>
+                <div class="form-group">
+                    <label for="client-amount">Monthly Amount ($) *</label>
+                    <input type="number" id="client-amount" step="0.01" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="client-currency">Currency</label>
+                    <select id="client-currency">
+                        <option value="CAD">CAD</option>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="client-description">Description</label>
+                    <textarea id="client-description" placeholder="e.g., Website maintenance, hosting, updates..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Client</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribe — {{ client.name }}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="payment-page">
+    <div class="payment-container">
+        <div class="payment-card">
+            <div class="payment-header">
+                <h1>Monthly Payment</h1>
+                <p class="payment-subtitle">Set up your recurring subscription</p>
+            </div>
+
+            <div class="payment-details">
+                <div class="detail-row">
+                    <span class="label">Service for</span>
+                    <span class="value">{{ client.name }}{% if client.company %} ({{ client.company }}){% endif %}</span>
+                </div>
+                {% if client.description %}
+                <div class="detail-row">
+                    <span class="label">Description</span>
+                    <span class="value">{{ client.description }}</span>
+                </div>
+                {% endif %}
+                <div class="detail-row total">
+                    <span class="label">Monthly Amount</span>
+                    <span class="value amount">${{ "%.2f"|format(client.monthly_amount) }} {{ client.currency }}/month</span>
+                </div>
+            </div>
+
+            {% if paypal_plan_id and paypal_client_id %}
+            <div id="paypal-button-container"></div>
+
+            <script src="https://www.paypal.com/sdk/js?client-id={{ paypal_client_id }}&vault=true&intent=subscription"></script>
+            <script>
+                paypal.Buttons({
+                    style: {
+                        shape: 'rect',
+                        color: 'blue',
+                        layout: 'vertical',
+                        label: 'subscribe'
+                    },
+                    createSubscription: function(data, actions) {
+                        return actions.subscription.create({
+                            plan_id: '{{ paypal_plan_id }}'
+                        });
+                    },
+                    onApprove: function(data, actions) {
+                        window.location.href = '/pay/{{ client.payment_token }}/success?subscription_id=' + data.subscriptionID;
+                    },
+                    onError: function(err) {
+                        document.getElementById('paypal-error').style.display = 'block';
+                        document.getElementById('paypal-error').textContent = 'Payment error. Please try again.';
+                    }
+                }).render('#paypal-button-container');
+            </script>
+            <p id="paypal-error" class="error-msg" style="display:none;"></p>
+            {% else %}
+            <div class="setup-pending">
+                <p>Payment setup is being configured. Please check back shortly or contact the administrator.</p>
+            </div>
+            {% endif %}
+
+            <div class="payment-footer">
+                <p>Secure payments powered by PayPal</p>
+                <p class="small">Your card will be charged automatically each month. You can cancel anytime.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

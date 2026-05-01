@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Confirmed</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="payment-page">
+    <div class="payment-container">
+        <div class="payment-card success-card">
+            <div class="success-icon">&#10003;</div>
+            <h1>Subscription Active!</h1>
+            <p>Thank you, {{ client.name }}. Your monthly subscription of <strong>${{ "%.2f"|format(client.monthly_amount) }} {{ client.currency }}</strong> has been set up successfully.</p>
+            <p class="small">Your card will be charged automatically each month. You will receive email confirmations from PayPal for each payment.</p>
+            <p class="small">If you need to make changes or cancel, please contact the administrator.</p>
+        </div>
+    </div>
+</body>
+</html>
