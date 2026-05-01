@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     app_name: str = "RecurPay"
     secret_key: str = "change-me-in-production"
-    database_url: str = "sqlite+aiosqlite:///./data/recurpay.db"
+    database_url: str = "sqlite+aiosqlite:////data/recurpay.db"
 
     # PayPal
     paypal_client_id: str = ""

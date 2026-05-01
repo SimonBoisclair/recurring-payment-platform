@@ -5,7 +5,7 @@ from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 from app.config import settings
 
-os.makedirs("data", exist_ok=True)
+os.makedirs("/data", exist_ok=True)
 
 engine = create_async_engine(settings.database_url, echo=False)
 async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
